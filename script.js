@@ -10,7 +10,14 @@ var displaySearchList=document.querySelector(".fav-container");
 
 fetch('http://www.omdbapi.com/?i=tt3896198&apikey=98f7b555').then(res=>res.json()).then(data=>console.log(data));
 
-searchInput.addEventListener('input',findMovies);
+searchInput.addEventListener("keypress", function(event) {
+    // If the user presses the "Enter" key on the keyboard
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("myBtn").click();
+      findMovies()
+    }
+  });
 
 async function singleMovie(){
     var urlQueryParam=new URLSearchParams(window.location.search);
@@ -61,24 +68,6 @@ async function singleMovie(){
 }
 
 
-async function addTofavorites(id){
-    console.log("fav-item", id);
-
-    localStorage.setItem(Math.random().toString(36).slice(2,7), id);
-    alert('Movie added to watchlist!');
-}
-
-async function removeFromfavourites(id){
-    console.log(id);
-    for(i in localStorage){
-        if(localStorage[i]==id){
-            localStorage.removeItem(i)
-            break;
-        }
-    }
-    alert('Movie Removed from Watchlist');
-    window.location.replace('favourite.html');
-}
 
 async function displayMovieList(movies){
     console.log("enter in display movielist")
@@ -131,47 +120,4 @@ async function findMovies(){
     }
 }
 
-async function favouritesMovieLoader(){
-    var output='';
-    for(i in localStorage){
-        var id=localStorage.getItem(i);
-        if(id!=null){
-            const url= `https://www.omdbapi.com/?i=${id}&plot=full&apikey=${key}`;
-            const res=await fetch(`${url}`);
-            const data=await res.json();
-            console.log(data);
 
-            var img='';
-            if(data.Poster){
-                img=data.Poster;
-            }
-            else{
-                img=data.Title;
-            }
-            var Id=data.imdbID;
-            output+=`
-            
-            
-        <div class="fav-item">
-        <div class="fav-poster">
-            <a href="movie.html?id=${id}"><img src=${img} alt="Favourites Poster"></a>
-        </div>
-        <div class="fav-details">
-            <div class="fav-details-box">
-                <div>
-                    <p class="fav-movie-name">${data.Title}</p>
-                    <p class="fav-movie-rating">${data.Year} &middot; <span
-                            style="font-size: 15px; font-weight: 600;">${data.imdbRating}</span>/10</p>
-                </div>
-                <div style="color: maroon">
-                    <i class="fa-solid fa-trash" style="cursor:pointer;" onClick=removeFromfavourites('${Id}')></i>
-                </div>
-            </div>
-        </div>
-        </div>
-            
-            `;
-        }
-    }
-    document.querySelector('.fav-container').innerHTML=output;
-}
