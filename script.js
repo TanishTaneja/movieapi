@@ -1,12 +1,7 @@
-// Here is your key: 98f7b555
-// OMDb API: http://www.omdbapi.com/?i=tt3896198&apikey=98f7b555
-
 const key='5c88b6f1';
 
 var searchInput=document.querySelector("#Input");
 var displaySearchList=document.querySelector(".fav-container");
-// console.log(searchInput);
-// console.log(displaySearchList);
 
 fetch('http://www.omdbapi.com/?i=tt3896198&apikey=98f7b555').then(res=>res.json()).then(data=>console.log(data));
 
@@ -38,9 +33,6 @@ async function singleMovie(){
          <div class="dh-ls">
                 <h2>${data.Title}</h2>
          </div>
-            <div class="dh-rs">
-                 <i class="fa-solid fa-bookmark" onClick=addTofavorites('${id}') style="cursor: pointer;"></i>
-            </div>
         </div>
 
         <span class="italics-text"><i>${data.Year} &#x2022; ${data.Country} &#x2022; Rating - <span
@@ -67,9 +59,7 @@ async function singleMovie(){
     document.querySelector('.movie-container').innerHTML=output;
 }
 
-
-
-async function displayMovieList(movies){
+function displayMovieList(movies){
     console.log("enter in display movielist")
     var output='';
     for(i of movies){
@@ -94,9 +84,6 @@ async function displayMovieList(movies){
                     <p class="fav-movie-name"><a href="movie.html?id=${id}">${i.Title}</a></p>
                     <p class="fav-movie-rating"><a href="movie.html?id=${id}">${i.Year}</a></p>
                 </div>
-                <div>
-                    <i class="fa-solid fa-bookmark" style="cursor:pointer;" onClick=addTofavorites('${id}')></i>
-                </div>
             </div>
         </div>
         </div>
@@ -112,12 +99,9 @@ async function findMovies(){
     const url= `https://www.omdbapi.com/?s=${(searchInput.value).trim()}&page=1&apikey=${key}`;
     const res=await fetch(`${url}`);
     const data=await res.json();
-    console.log("enter in find movies");
 
     if(data.Search){
         console.log("enterr");
         displayMovieList(data.Search);
     }
 }
-
-
