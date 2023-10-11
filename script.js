@@ -3,8 +3,6 @@ const key='5c88b6f1';
 var searchInput=document.querySelector("#Input");
 var displaySearchList=document.querySelector(".fav-container");
 
-fetch('http://www.omdbapi.com/?i=tt3896198&apikey=98f7b555').then(res=>res.json()).then(data=>console.log(data));
-
 searchInput.addEventListener("keypress", function(event) {
     // If the user presses the "Enter" key on the keyboard
     if (event.key === "Enter") {
@@ -99,7 +97,8 @@ async function findMovies(){
     const url= `https://www.omdbapi.com/?s=${(searchInput.value).trim()}&page=1&apikey=${key}`;
     const res=await fetch(`${url}`);
     const data=await res.json();
-
+    console.log(data.Search)
+;
     if(data.Search){
         console.log("enterr");
         displayMovieList(data.Search);
